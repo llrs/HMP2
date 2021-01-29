@@ -94,7 +94,19 @@ paired %>%
 paired %>%
   group_by(`Participant ID`, biopsy_location) %>%
   summarize(n = n_distinct(visit_num)) %>%
-  filter(n != 1)
+  filter(n != 1) %>%
+  ungroup() %>%
+  count(n)
 
-p2 <- filter(paired, biopsy_location != "Non-inflamed") %>% count(`Participant ID`)
+p2 <- filter(paired, biopsy_location != "Non-inflamed")
 
+p_id <- p2 %>%
+  group_by(`Participant ID`, biopsy_location) %>%
+  summarize(n = n_distinct(visit_num)) %>%
+  filter(n != 1) %>%
+  ungroup() %>%
+  pull(`Participant ID`)
+
+p3 <- filter(p2, `Participant ID` %in% p_id)
+
+saveRDS(p3, "data_out/metadata.RDS")
