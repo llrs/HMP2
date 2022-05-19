@@ -82,7 +82,7 @@ meaningful_columns <- hmp2b %>%
   select(where(mix)) %>%
   colnames()
 
-paired <- select(hmp2b, meaningful_columns)
+paired <- select(hmp2b, all_of(meaningful_columns))
 
 # Some samples from the same participant and visit
 paired %>%
